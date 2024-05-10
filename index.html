@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Responsive Rive Animation</title>
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        font-size: 0px;
+        font-family: Arial, sans-serif;
+    }
+    canvas {
+
+        width: 700px;  /* Set canvas width to 80% of the browser width */
+        height: auto;  /* Maintain aspect ratio */
+    }
+</style>
+<script src="https://unpkg.com/@rive-app/canvas@2.10.3"></script>
+</head>
+<body>
+<canvas id="riveCanvas"></canvas>
+<div id="widthDisplay"></div>
+<script>
+    let riveInstance, widthNumInput;
+
+    function updateWidth() {
+        const browserWidth = window.innerWidth;
+        document.getElementById('widthDisplay').innerText = browserWidth + ' px';
+        
+        if (widthNumInput) {
+            widthNumInput.value = browserWidth;  // Set the 'Width Num' input to the current browser width
+        }
+    }
+
+    riveInstance = new rive.Rive({
+        src: 'width.riv', // Ensure this URL is correct
+        canvas: document.getElementById('riveCanvas'),
+        autoplay: true,
+        artboard: 'Artboard 1',
+        stateMachines: 'State Machine 1',
+        onLoad: () => {
+            // Get the inputs via the name of the state machine
+            const inputs = riveInstance.stateMachineInputs('State Machine 1');
+            // Find the 'Width Num' input
+            widthNumInput = inputs.find(i => i.name === 'Width Num');
+            riveInstance.resizeDrawingSurfaceToCanvas();
+            
+            // Update the Rive input initially and whenever the browser resizes
+            window.onresize = updateWidth;
+            updateWidth();
+        }
+    });
+</script>
+</body>
+</html>
