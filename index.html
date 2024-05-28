@@ -6,19 +6,21 @@
 <title>Responsive Rive Animation</title>
 <style>
 body, html {
-    height: 100%;  /* Ensure the full height of the page is occupied */
+    height: 100%;
     margin: 0;
-    display: flex;
-    justify-content: center;  /* Center horizontally */
-    align-items: top;  /* Center vertically */
     font-size: 0px;
     font-family: Arial, sans-serif;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-y: auto;   /* Allow vertical scrolling */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-    canvas {
-
-        width: 2000px;  /* Set canvas width */
-        height: 2000px;  /* Maintain aspect ratio */
-    }
+canvas {
+    width: 4000px; /* Set canvas width */
+    height: 4000px; /* Set canvas height */
+    margin: 0 auto; /* Center the canvas horizontally */
+}
 </style>
 <script src="https://unpkg.com/@rive-app/canvas@2.10.3"></script>
 </head>
@@ -33,24 +35,21 @@ body, html {
         document.getElementById('widthDisplay').innerText = browserWidth + ' px';
         
         if (widthNumInput) {
-            widthNumInput.value = browserWidth;  // Set the 'Width Num' input to the current browser width
+            widthNumInput.value = browserWidth;  
         }
     }
 
     riveInstance = new rive.Rive({
-        src: 'website_3.riv', // Ensure this URL is correct
+        src: 'website_5.riv', // Ensure this file name is correct
         canvas: document.getElementById('riveCanvas'),
         autoplay: true,
-        artboard: 'New Artboard',
-        stateMachines: 'State Machine 1',
+        artboard: 'New Artboard', //Ensure this artboard name is correct
+        stateMachines: 'State Machine 1', //Ensure this state machine name is correct
         onLoad: () => {
-            // Get the inputs via the name of the state machine
-            const inputs = riveInstance.stateMachineInputs('State Machine 1');
-            // Find the 'Width Num' input
-            widthNumInput = inputs.find(i => i.name === 'width');
+            const inputs = riveInstance.stateMachineInputs('State Machine 1'); //Ensure this state machine name is correct
+            widthNumInput = inputs.find(i => i.name === 'title num'); //Ensure this input name is correct
             riveInstance.resizeDrawingSurfaceToCanvas();
             
-            // Update the Rive input initially and whenever the browser resizes
             window.onresize = updateWidth;
             updateWidth();
         }
